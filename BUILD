@@ -1,0 +1,45 @@
+cc_library(
+    name = "headers",
+    hdrs = [
+        "inc/CL/cl.h",
+        "inc/CL/cl_d3d10.h",
+        "inc/CL/cl_d3d11.h",
+        "inc/CL/cl_dx9_media_sharing.h",
+        "inc/CL/cl_dx9_media_sharing_intel.h",
+        "inc/CL/cl_egl.h",
+        "inc/CL/cl_ext.h",
+        "inc/CL/cl_ext_intel.h",
+        "inc/CL/cl_gl.h",
+        "inc/CL/cl_gl_ext.h",
+        "inc/CL/cl_half.h",
+        "inc/CL/cl_icd.h",
+        "inc/CL/cl_platform.h",
+        "inc/CL/cl_va_api_media_sharing_intel.h",
+        "inc/CL/cl_version.h",
+        "inc/CL/opencl.h",
+    ],
+    includes = ["inc"],
+)
+
+cc_library(
+    name = "icd",
+    srcs = [
+        "loader/icd.c",
+        "loader/icd.h",
+        "loader/icd_dispatch.c",
+        "loader/icd_dispatch.h",
+        "loader/icd_dispatch_generated.c",
+        "loader/icd_envvars.h",
+        "loader/icd_platform.h",
+        "loader/linux/icd_cmake_config.h",
+        "loader/linux/icd_linux.c",
+        "loader/linux/icd_linux_envvars.c",
+    ],
+    defines = ["CL_TARGET_OPENCL_VERSION=120"],
+    includes = ["loader"],
+    linkopts = ["-Wl,--version-script=loader/linux/icd_exports.ld"],
+    deps = [
+        "loader/linux/icd_exports.ld",
+        ":headers",
+    ],
+)
